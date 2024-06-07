@@ -1,19 +1,21 @@
-import { CommonModule } from "@angular/common";
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, booleanAttribute, inject } from "@angular/core";
-import { Tree } from "./tree";
-import { FolderComponent } from "./folder.component";
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { Tree } from './tree';
 
 @Component({
-    standalone: true,
-    imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule],
 
-    selector: 'app-tree',
-    template: `
+  selector: 'app-tree',
+  template: `
     <div class="folder">
-
+      <div (click)="triggerToggle()">{{ tree.value }}</div>
+      @for (branch of tree.children; track $index) {
+      <app-tree [tree]="branch" [hidden]="toggle"/>
+      }
     </div>
-    `,
-    styles: `
+  `,
+  styles: `
         :host {
             width: 100%
         }    
@@ -24,13 +26,17 @@ import { FolderComponent } from "./folder.component";
             background-color: var(--box);
             border: solid
         }
-    `
+    `,
 })
 export class TreeComponent {
+  /* Ce fichier peut être librement modifié pour l'exercice (template et composant) */
 
-    /* Ce fichier peut être librement modifié pour l'exercice (template et composant) */
+  @Input({ required: true })
+  tree!: Tree;
 
-    @Input({ required: true })
-    tree!: Tree
+  toggle: boolean = false;
 
+  triggerToggle() {
+    this.toggle = this.toggle ? false : true;
+  }
 }
