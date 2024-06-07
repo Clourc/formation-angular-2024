@@ -10,8 +10,10 @@ import { Tree } from './tree';
   template: `
     <div class="folder">
       <div (click)="triggerToggle()">{{ tree.value }}</div>
-      @for (branch of tree.children; track $index) {
-      <app-tree [tree]="branch" [hidden]="toggle"/>
+      @for (branch of tree.children; track $index) { 
+        @if(toggle) {
+          <app-tree [tree]="branch"/>
+        } 
       }
     </div>
   `,
@@ -34,7 +36,7 @@ export class TreeComponent {
   @Input({ required: true })
   tree!: Tree;
 
-  toggle: boolean = false;
+  toggle: boolean = true;
 
   triggerToggle() {
     this.toggle = this.toggle ? false : true;
